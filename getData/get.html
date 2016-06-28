@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<script>
+    var r=[];var i=0;
+    var sql= "";
+    $.ajax({
+        url:"s.html"
+    }).done(function(d){
+        r[0]={
+            html:d
+        }
+        r[i].html=r[i].html.split("<body")[1]
+        r[i].html=r[i].html.split("</body>")[0]
+        if(r[i].html.indexOf("</span>症状</h2>")!=-1) {
+            htmlArr = r[i].html.split("</span>症状</h2>")[1].split("para-title")[0];
+            htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\/<>_\[\]\&(%%)(:;)(..)(编辑)]+/g,"");
+            htmlArr=htmlArr.replace(/[ \n]+/g,"")
+            sql+=",\""+htmlArr+"\"";
+        }else{
+            sql+=",\" \"";
+        }
+        if(r[i].html.indexOf("<dt>就诊科室</dt>")!=-1){
+            htmlArr=r[i].html.split("<dt>就诊科室</dt>")[1].split("</dd>")[0];
+            htmlArr=htmlArr.replace("<dd>","").replace(/[ \n(编辑)]/g,"")
+            sql+=",\""+htmlArr+"\"";
+        }else{
+            sql+=",\" \"";
+        }
+        if(r[i].html.indexOf("<dt>传染性</dt>")!=-1){
+            htmlArr=r[i].html.split("<dt>传染性</dt>")[1].split("</dd>")[0];
+            htmlArr=htmlArr.replace("<dd>","").replace(/[ \n(编辑)]/g,"")
+            sql+=",\""+htmlArr+"\"";
+        }else{
+            sql+=",\" \"";
+        }
+        if(r[i].html.indexOf("</span>诊断方法</h2>")!=-1) {
+            htmlArr = r[i].html.split("</span>诊断方法</h2>")[1].split("para-title")[0].split('class="description">')[1];
+            htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
+            htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
+            sql+=",\""+htmlArr+"\"";
+        }else{
+            sql+=",\" \"";
+        }
+        if(r[i].html.indexOf("</span>疾病病因</h2>")!=-1) {
+            htmlArr = r[i].html.split("</span>疾病病因</h2>")[1].split("para-title")[0];
+            htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_\[\]\&]+/g,"");
+            htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
+            sql+=",\""+htmlArr+"\"";
+        }else{
+            sql+=",\" \"";
+        }
+
+        if(r[i].html.indexOf("</span>治疗</h2>")!=-1) {
+            htmlArr = r[i].html.split("</span>治疗</h2>")[1].split("para-title")[0];
+            htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_\[\]\&(%%)(:;)(..)]+/g,"");
+            htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
+            sql+=",\""+htmlArr+"\"";
+        }else{
+            sql+=",\" \"";
+        }
+        console.log(sql);
+    })
+</script>
+</body>
+</html>
