@@ -33,7 +33,11 @@ function a(r){
     var sql ="update detail set symptom=\"";
     var htmlArr="",e=r[i],tempSql="";
     try{
-        if(i>496){return;}
+        if(i>495){return;}
+        if(!e){
+            console.log(i);
+            //return;
+        }
         if(r[i].html.indexOf("<dt>常见症状</dt>")!=-1&&!tempSql){
             htmlArr=r[i].html.split("<dt>常见症状</dt>")[1].split("</dd>")[0];
             htmlArr=htmlArr.replace("<dd>","").replace(/[ \n(编辑)]/g,"")
@@ -45,33 +49,39 @@ function a(r){
             tempSql=htmlArr;
         }
         if(r[i].html.indexOf("</span>症状体征</h2>")!=-1&&!tempSql) {
-            htmlArr = r[i].html.split("</span>症状体征</h2>")[1].split("para-title")[0];
+            htmlArr = r[i].html.split("</span>症状体征</h2>")[1].split("level-2")[0];
             htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
             htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
             tempSql=htmlArr;
         }
         if(r[i].html.indexOf("</span>症状</h2>")!=-1&&!tempSql) {
-            htmlArr = r[i].html.split("</span>症状</h2>")[1].split("para-title")[0];
+            htmlArr = r[i].html.split("</span>症状</h2>")[1].split("level-2")[0];
             htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
             htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
             tempSql=htmlArr;
         }
         if(r[i].html.indexOf("</span>临床表现</h2>")!=-1&&!tempSql) {
-            htmlArr = r[i].html.split("</span>临床表现</h2>")[1].split("para-title")[0];
+            htmlArr = r[i].html.split("</span>临床表现</h2>")[1].split("level-2")[0];
             htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
             htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
             tempSql=htmlArr;
         }
         if(r[i].html.indexOf("</span>疾病症状</h2>")!=-1&&!tempSql) {
-            htmlArr = r[i].html.split("</span>疾病症状</h2>")[1].split("para-title")[0];
+            htmlArr = r[i].html.split("</span>疾病症状</h2>")[1].split("level-2")[0];
             htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
             htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
             tempSql=htmlArr;
         }
         if(r[i].html.indexOf("</span>名词解释</h2>")!=-1&&!tempSql) {
-            htmlArr = r[i].html.split("</span>名词解释</h2>")[1].split("para-title")[0];
+            htmlArr = r[i].html.split("</span>名词解释</h2>")[1].split("level-2")[0];
             htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
             htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"")
+            tempSql=htmlArr;
+        }
+        if(!tempSql){
+            htmlArr = r[i].html.split("lemmaSummary")[1].split("</div>")[0];
+            htmlArr=htmlArr.replace(/[a-zA-Z\"\'=\-\/<>0-9_]+/g,"");
+            htmlArr=htmlArr.replace(/[ \n(编辑)]/g,"");
             tempSql=htmlArr;
         }
         if(!tempSql){
@@ -81,6 +91,7 @@ function a(r){
             tempSql="a"+htmlArr;
             emptyLength++;
         }
+        tempSql=tempSql.replace(":;","");
         sql+=tempSql
         sql+="\" where medicalid="+e.medicalid;
     }catch(e){console.log(e)}
@@ -93,14 +104,15 @@ function a(r){
                 if(results)
                 {
                     // a(results)
-                    if(i>=496){
+                    if(i>=495){
                         console.log("end,emptyLength:"+emptyLength);
                         client.end();
+                    }else{
+                        i++
+                        a(r)
                     }
                 }
                 //console.log(e.medicalid);
-                i++
-                a(r)
             }
         );
 }

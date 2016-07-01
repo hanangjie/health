@@ -1,0 +1,19 @@
+<run>
+    <first>
+        medicalname.js,
+        medicalnameIn.js
+        <creat>建立medicalname数据</creat>
+    </first>
+    <second>
+        medicalDetail.js,
+        <creat>建立medicalHtml数据</creat>
+        medicalDetailPlan.js
+        <add>补齐medicalHtml数据</add>
+    </second>
+    <third>
+        getDetail.js,
+        <creat>建立Detail数据</creat>
+       getSymptom.js
+        <add>补齐症状数据</add>
+    </third>
+</run>
